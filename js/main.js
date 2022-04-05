@@ -39,9 +39,10 @@ $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
   var entryFormObject = {
     entryTitle: photoTitle,
-    entryUrl: photoTitle,
+    entryUrl: photoUrl,
     entryNotes: notes,
-    nextEntryId: data.nextEntryId
+    nextEntryId: data.nextEntryId,
+    entryId: data.nextEntryId - 1
   };
   data.nextEntryId++;
   data.entries.unshift(entryFormObject);
@@ -51,4 +52,11 @@ $entryForm.addEventListener('submit', function (event) {
   $entryUrl.value = '';
   $entryTitle.value = '';
   $entryNotes.value = '';
+  photoUrl = '';
+  photoTitle = '';
+  notes = '';
+  var entryFormJSON = JSON.stringify(entryFormObject);
+  var key = 'entry-form-' + entryFormObject.entryId;
+  localStorage.setItem(key, entryFormJSON);
+  localStorage.setItem('data', JSON.stringify(data));
 });
