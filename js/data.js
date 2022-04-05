@@ -8,13 +8,10 @@ var data = {
 };
 
 if (localStorage.getItem('data')) {
-  for (var key in data) {
-    var previousDataJSON = localStorage.getItem('data');
-    var previousData = JSON.parse(previousDataJSON);
-    data[key] = previousData[key];
-  }
+  var previousDataJSON = localStorage.getItem('data');
+  data = JSON.parse(previousDataJSON);
 }
 
-window.addEventListener('unload', function (event) {
+window.addEventListener('beforeunload', function (event) {
   localStorage.setItem('data', JSON.stringify(data));
 });

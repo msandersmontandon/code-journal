@@ -6,6 +6,7 @@ var $entryUrl = document.querySelector('#entry-url');
 var $entryTitle = document.querySelector('#entry-title');
 var $entryNotes = document.querySelector('#entry-notes');
 var $entryImage = document.querySelector('.entry-image > img');
+
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
     $entryImage.setAttribute('src', event.target.value);
