@@ -10,6 +10,14 @@ var photoUrl = '';
 var photoTitle = '';
 var notes = '';
 
+if (localStorage.getItem('data')) {
+  for (var key in data) {
+    var previousDataJSON = localStorage.getItem('data');
+    var previousData = JSON.parse(previousDataJSON);
+    data[key] = previousData[key];
+  }
+}
+
 $entryForm.addEventListener('input', function (event) {
   if (event.target === $entryUrl) {
     photoUrl = event.target.value;
