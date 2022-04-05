@@ -1,2 +1,54 @@
 /* global data */
 /* exported data */
+
+var $entryForm = document.querySelector('[data-view="entry-form"]');
+var $entryUrl = document.querySelector('#entry-url');
+var $entryTitle = document.querySelector('#entry-title');
+var $entryNotes = document.querySelector('#entry-notes');
+var $entryImage = document.querySelector('.entry-image > img');
+var photoUrl = '';
+var photoTitle = '';
+var notes = '';
+
+$entryForm.addEventListener('input', function (event) {
+  if (event.target === $entryUrl) {
+    photoUrl = event.target.value;
+  }
+  if (event.target === $entryTitle) {
+    photoTitle = event.target.value;
+  }
+  if (event.target === $entryNotes) {
+    notes = event.target.value;
+  }
+});
+
+$entryUrl.addEventListener('blur', function (event) {
+  if (photoUrl) {
+    $entryImage.setAttribute('src', photoUrl);
+  }
+});
+
+$entryTitle.addEventListener('blur', function (event) {
+  if (photoTitle) {
+    $entryImage.setAttribute('alt', photoTitle);
+    $entryImage.setAttribute('title', photoTitle);
+  }
+});
+
+$entryForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  var entryFormObject = {
+    entryTitle: photoTitle,
+    entryUrl: photoTitle,
+    entryNotes: notes,
+    nextEntryId: data.nextEntryId
+  };
+  data.nextEntryId++;
+  data.entries.unshift(entryFormObject);
+  $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  $entryImage.setAttribute('alt', 'Placeholder Image');
+  $entryImage.setAttribute('title', 'Placeholder Image');
+  $entryUrl.value = '';
+  $entryTitle.value = '';
+  $entryNotes.value = '';
+});
