@@ -8,6 +8,7 @@ var $entryTitle = document.querySelector('#entry-title');
 var $entryNotes = document.querySelector('#entry-notes');
 var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
+var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
 
 $entryUrl.addEventListener('blur', function (event) {
@@ -52,9 +53,15 @@ function setEntry(dataEntry) {
   var $rightColumn = document.createElement('div');
   $rightColumn.className = 'column-half right';
   $newEntry.appendChild($rightColumn);
+  var $rightRow = document.createElement('div');
+  $rightRow.className = 'row justify-between';
+  $rightColumn.appendChild($rightRow);
   var $rightTitle = document.createElement('h2');
   $rightTitle.textContent = dataEntry.entryTitle;
-  $rightColumn.appendChild($rightTitle);
+  $rightRow.appendChild($rightTitle);
+  var $rightIcon = document.createElement('i');
+  $rightIcon.className = 'fas fa-pen';
+  $rightRow.appendChild($rightIcon);
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
@@ -77,6 +84,8 @@ $entriesButton.addEventListener('click', function (event) {
 });
 
 $entries.addEventListener('click', function (event) {
-  $entryForm.className = '';
-  $entries.className = 'hidden';
+  if (event.target === $newButton) {
+    $entryForm.className = '';
+    $entries.className = 'hidden';
+  }
 });
