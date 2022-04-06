@@ -35,6 +35,7 @@ h2.column-auto {
 i {
   color: #562b81;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 main {

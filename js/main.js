@@ -88,4 +88,14 @@ $entries.addEventListener('click', function (event) {
     $entryForm.className = '';
     $entries.className = 'hidden';
   }
+  if (event.target.tagName === 'I') {
+    $entryForm.className = '';
+    $entries.className = 'hidden';
+    var $currentEntryEdit = event.target.closest('li');
+    var currentEntryId = $currentEntryEdit.getAttribute('id');
+    data.editing = data.entries.entryId[currentEntryId];
+    $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+    $entryImage.setAttribute('alt', 'Placeholder Image');
+    $entryImage.setAttribute('title', 'Placeholder Image');
+  }
 });
