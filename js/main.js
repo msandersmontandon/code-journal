@@ -1,6 +1,7 @@
 /* global data */
 /* exported data */
 
+var $entriesButton = document.querySelector('.header button');
 var $entryForm = document.querySelector('[data-view="entry-form"]');
 var $entryUrl = document.querySelector('#entry-url');
 var $entryTitle = document.querySelector('#entry-title');
@@ -31,11 +32,12 @@ $entryForm.addEventListener('submit', function (event) {
     entryNotes: $entryNotes.value,
     entryId: data.nextEntryId++
   };
-  data.entries.unshift(entryFormObject);
+  data.entries.push(entryFormObject);
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $entryImage.setAttribute('alt', 'Placeholder Image');
   $entryImage.setAttribute('title', 'Placeholder Image');
   $entryForm.firstElementChild.reset();
+  setEntry(entryFormObject);
 });
 
 function setEntry(dataEntry) {
@@ -57,10 +59,26 @@ function setEntry(dataEntry) {
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
-  $ulEntries.insertBefore($newEntry, $ulEntries.querySelector('li'));
+  $ulEntries.prepend($newEntry);
   entryList['entryId #' + dataEntry.entryId] = $newEntry;
+  $entryForm.className = 'hidden';
+  $entries.className = '';
 }
 
 for (var i = 0; i < data.entries.length; i++) {
   setEntry(data.entries[i]);
 }
+
+$entriesButton.addEventListener('click', function (event) {
+  $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  $entryImage.setAttribute('alt', 'Placeholder Image');
+  $entryImage.setAttribute('title', 'Placeholder Image');
+  $entryForm.firstElementChild.reset();
+  $entryForm.className = 'hidden';
+  $entries.className = '';
+});
+
+$entries.addEventListener('click', function (event) {
+  $entryForm.className = '';
+  $entries.className = 'hidden';
+});
