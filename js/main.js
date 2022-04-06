@@ -9,7 +9,6 @@ var $entryNotes = document.querySelector('#entry-notes');
 var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
 var $ulEntries = $entries.querySelector('ul.entries');
-// var entryList = {};
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -59,8 +58,6 @@ function setEntry(dataEntry) {
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
-  // $ulEntries.prepend($newEntry);
-  // entryList['entryId #' + dataEntry.entryId] = $newEntry;
   $entryForm.className = 'hidden';
   $entries.className = '';
   return $newEntry;
