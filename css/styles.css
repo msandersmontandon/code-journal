@@ -11,7 +11,7 @@ h3 {
 }
 
 header > .container {
-  font-size: 1.25rem;
+  /* font-size: 1.25rem; */
   font-weight: 400, normal;
   line-height: 1.706rem;
   margin-top: 0;
@@ -19,8 +19,12 @@ header > .container {
   padding-bottom: 0.688rem;
 }
 
-p {
+h2.column-auto {
+  font-size: 1.25rem;
   margin: 0;
+  font-weight: 400, normal;
+  line-height: 1.706rem;
+  padding-right: 0.563rem;
 }
 
 .theme {
@@ -53,10 +57,27 @@ h1 {
     height: 20.737rem;
     margin-bottom: 0;
   }
+
+  div.left {
+    padding-right: 1.125rem;
+  }
+
+  div.right {
+    padding-left: 1.125rem;
+    margin-bottom: 2.438rem;
+  }
 }
 
 .text-right {
   text-align: right;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
 }
 
 input[type="text"],
@@ -100,4 +121,44 @@ button.theme {
 
 ul {
   padding-inline-start: 0;
+}
+
+button.column-auto {
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  background-color: inherit;
+  border: 0 none;
+  cursor: pointer;
+  padding-left: 0.563rem;
+}
+
+button.entries-heading {
+  width: auto;
+  padding: 0.313rem 0.688rem;
+  margin: auto 0;
+}
+
+h1.entries-heading {
+  margin-bottom: 0;
+}
+
+.entries {
+  color: #292929;
+}
+
+.entries h2 {
+  margin: 0;
+}
+
+.entries p {
+  line-height: 1.625rem;
+}
+
+.entries .left {
+  margin-bottom: 1.625rem;
+}
+
+.entries .right {
+  margin-bottom: 1.688rem;
 }
