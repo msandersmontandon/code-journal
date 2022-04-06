@@ -9,7 +9,7 @@ var $entryNotes = document.querySelector('#entry-notes');
 var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
 var $ulEntries = $entries.querySelector('ul.entries');
-var entryList = {};
+// var entryList = {};
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -32,12 +32,12 @@ $entryForm.addEventListener('submit', function (event) {
     entryNotes: $entryNotes.value,
     entryId: data.nextEntryId++
   };
-  data.entries.push(entryFormObject);
+  data.entries.unshift(entryFormObject);
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $entryImage.setAttribute('alt', 'Placeholder Image');
   $entryImage.setAttribute('title', 'Placeholder Image');
   $entryForm.firstElementChild.reset();
-  setEntry(entryFormObject);
+  $ulEntries.prepend(setEntry(entryFormObject));
 });
 
 function setEntry(dataEntry) {
@@ -59,14 +59,15 @@ function setEntry(dataEntry) {
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
-  $ulEntries.prepend($newEntry);
-  entryList['entryId #' + dataEntry.entryId] = $newEntry;
+  // $ulEntries.prepend($newEntry);
+  // entryList['entryId #' + dataEntry.entryId] = $newEntry;
   $entryForm.className = 'hidden';
   $entries.className = '';
+  return $newEntry;
 }
 
 for (var i = 0; i < data.entries.length; i++) {
-  setEntry(data.entries[i]);
+  $ulEntries.appendChild(setEntry(data.entries[i]));
 }
 
 $entriesButton.addEventListener('click', function (event) {
