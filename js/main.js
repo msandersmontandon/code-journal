@@ -11,6 +11,7 @@ var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
 var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
+var $currentEntryEdit = {};
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -27,18 +28,40 @@ $entryTitle.addEventListener('blur', function (event) {
 
 $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
-  var entryFormObject = {
-    entryTitle: $entryTitle.value,
-    entryUrl: $entryUrl.value,
-    entryNotes: $entryNotes.value,
-    entryId: data.nextEntryId++
-  };
-  data.entries.unshift(entryFormObject);
+  if (data.editing) {
+    data.editing.entryTitle = $entryTitle.value;
+    data.editing.entryUrl = $entryUrl.value;
+    data.editing.entryNotes = $entryNotes.value;
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === data.editing.entryId) {
+        data.entries.splice(i, 1, data.editing);
+      }
+    }
+    var $currentEditImage = $currentEntryEdit.querySelector('img');
+    $currentEditImage.setAttribute('src', data.editing.entryUrl);
+    $currentEditImage.setAttribute('alt', data.editing.entryTitle);
+    $currentEditImage.setAttribute('title', data.editing.entryTitle);
+    var $currentEditTitle = $currentEntryEdit.querySelector('h2');
+    $currentEditTitle.textContent = data.editing.entryTitle;
+    var $currentEditNotes = $currentEntryEdit.querySelector('p');
+    $currentEditNotes.textContent = data.editing.entryNotes;
+    data.editing = null;
+  } else {
+    var entryFormObject = {
+      entryTitle: $entryTitle.value,
+      entryUrl: $entryUrl.value,
+      entryNotes: $entryNotes.value,
+      entryId: data.nextEntryId++
+    };
+    data.entries.unshift(entryFormObject);
+    $ulEntries.prepend(setEntry(entryFormObject));
+  }
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $entryImage.setAttribute('alt', 'Placeholder Image');
   $entryImage.setAttribute('title', 'Placeholder Image');
   $entryForm.firstElementChild.reset();
-  $ulEntries.prepend(setEntry(entryFormObject));
+  $entryForm.className = 'hidden';
+  $entries.className = '';
 });
 
 function setEntry(dataEntry) {
@@ -50,6 +73,8 @@ function setEntry(dataEntry) {
   $newEntry.appendChild($leftColumn);
   var $leftImage = document.createElement('img');
   $leftImage.setAttribute('src', dataEntry.entryUrl);
+  $leftImage.setAttribute('alt', dataEntry.entryTitle);
+  $leftImage.setAttribute('title', dataEntry.entryTitle);
   $leftColumn.appendChild($leftImage);
   var $rightColumn = document.createElement('div');
   $rightColumn.className = 'column-half right';
@@ -66,8 +91,6 @@ function setEntry(dataEntry) {
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
-  $entryForm.className = 'hidden';
-  $entries.className = '';
   return $newEntry;
 }
 
@@ -94,7 +117,7 @@ $entries.addEventListener('click', function (event) {
     $entryFormHeading.textContent = 'Edit Entry';
     $entryForm.className = '';
     $entries.className = 'hidden';
-    var $currentEntryEdit = event.target.closest('li');
+    $currentEntryEdit = event.target.closest('li');
     var currentEntryId = $currentEntryEdit.getAttribute('id');
     for (var i = 0; i < data.entries.length; i++) {
       if (data.entries[i].entryId === Number(currentEntryId)) {
@@ -105,7 +128,7 @@ $entries.addEventListener('click', function (event) {
     $entryImage.setAttribute('alt', data.editing.entryTitle);
     $entryImage.setAttribute('title', data.editing.entryTitle);
     $entryTitle.value = data.editing.entryTitle;
-    $entryUrl.values = data.editing.entryUrl;
-    $entryNotes.values = data.editing.entryNotes;
+    $entryUrl.value = data.editing.entryUrl;
+    $entryNotes.value = data.editing.entryNotes;
   }
 });
