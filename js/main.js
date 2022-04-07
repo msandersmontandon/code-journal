@@ -7,11 +7,17 @@ var $entryFormHeading = $entryForm.querySelector('h1');
 var $entryUrl = document.querySelector('#entry-url');
 var $entryTitle = document.querySelector('#entry-title');
 var $entryNotes = document.querySelector('#entry-notes');
+var $deleteButton = $entryForm.querySelector('.delete button');
+var $saveButton = $entryForm.querySelector('button.save');
 var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
 var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
 var $currentEntryEdit = {};
+var $deleteModal = document.querySelector('[data-view="delete-modal"]');
+var $cancelButton = $deleteModal.querySelector('button.cancel');
+var $confirmButton = $deleteModal.querySelector('button.confirm');
+data.editing = null;
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -26,42 +32,46 @@ $entryTitle.addEventListener('blur', function (event) {
   }
 });
 
-$entryForm.addEventListener('submit', function (event) {
+$entryForm.addEventListener('click', function (event) {
   event.preventDefault();
-  if (data.editing) {
-    data.editing.entryTitle = $entryTitle.value;
-    data.editing.entryUrl = $entryUrl.value;
-    data.editing.entryNotes = $entryNotes.value;
-    for (var i = 0; i < data.entries.length; i++) {
-      if (data.entries[i].entryId === data.editing.entryId) {
-        data.entries.splice(i, 1, data.editing);
+  if (event.target === $saveButton) {
+    if (data.editing) {
+      data.editing.entryTitle = $entryTitle.value;
+      data.editing.entryUrl = $entryUrl.value;
+      data.editing.entryNotes = $entryNotes.value;
+      for (var i = 0; i < data.entries.length; i++) {
+        if (data.entries[i].entryId === data.editing.entryId) {
+          data.entries.splice(i, 1, data.editing);
+        }
       }
+      var $currentEditImage = $currentEntryEdit.querySelector('img');
+      $currentEditImage.setAttribute('src', data.editing.entryUrl);
+      $currentEditImage.setAttribute('alt', data.editing.entryTitle);
+      $currentEditImage.setAttribute('title', data.editing.entryTitle);
+      var $currentEditTitle = $currentEntryEdit.querySelector('h2');
+      $currentEditTitle.textContent = data.editing.entryTitle;
+      var $currentEditNotes = $currentEntryEdit.querySelector('p');
+      $currentEditNotes.textContent = data.editing.entryNotes;
+      data.editing = null;
+    } else {
+      var entryFormObject = {
+        entryTitle: $entryTitle.value,
+        entryUrl: $entryUrl.value,
+        entryNotes: $entryNotes.value,
+        entryId: data.nextEntryId++
+      };
+      data.entries.unshift(entryFormObject);
+      $ulEntries.prepend(setEntry(entryFormObject));
     }
-    var $currentEditImage = $currentEntryEdit.querySelector('img');
-    $currentEditImage.setAttribute('src', data.editing.entryUrl);
-    $currentEditImage.setAttribute('alt', data.editing.entryTitle);
-    $currentEditImage.setAttribute('title', data.editing.entryTitle);
-    var $currentEditTitle = $currentEntryEdit.querySelector('h2');
-    $currentEditTitle.textContent = data.editing.entryTitle;
-    var $currentEditNotes = $currentEntryEdit.querySelector('p');
-    $currentEditNotes.textContent = data.editing.entryNotes;
-    data.editing = null;
-  } else {
-    var entryFormObject = {
-      entryTitle: $entryTitle.value,
-      entryUrl: $entryUrl.value,
-      entryNotes: $entryNotes.value,
-      entryId: data.nextEntryId++
-    };
-    data.entries.unshift(entryFormObject);
-    $ulEntries.prepend(setEntry(entryFormObject));
+    $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+    $entryImage.setAttribute('alt', 'Placeholder Image');
+    $entryImage.setAttribute('title', 'Placeholder Image');
+    $entryForm.firstElementChild.reset();
+    $entryForm.className = 'hidden';
+    $entries.className = '';
+  } else if (event.target === $deleteButton) {
+    $deleteModal.className = '';
   }
-  $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
-  $entryImage.setAttribute('alt', 'Placeholder Image');
-  $entryImage.setAttribute('title', 'Placeholder Image');
-  $entryForm.firstElementChild.reset();
-  $entryForm.className = 'hidden';
-  $entries.className = '';
 });
 
 function setEntry(dataEntry) {
@@ -105,6 +115,8 @@ $entriesButton.addEventListener('click', function (event) {
   $entryForm.firstElementChild.reset();
   $entryForm.className = 'hidden';
   $entries.className = '';
+  data.editing = null;
+  $currentEntryEdit = {};
 });
 
 $entries.addEventListener('click', function (event) {
@@ -112,11 +124,13 @@ $entries.addEventListener('click', function (event) {
     $entryFormHeading.textContent = 'New Entry';
     $entryForm.className = '';
     $entries.className = 'hidden';
+    $deleteButton.className = 'hidden';
   }
   if (event.target.tagName === 'I') {
     $entryFormHeading.textContent = 'Edit Entry';
     $entryForm.className = '';
     $entries.className = 'hidden';
+    $deleteButton.className = '';
     $currentEntryEdit = event.target.closest('li');
     var currentEntryId = $currentEntryEdit.getAttribute('id');
     for (var i = 0; i < data.entries.length; i++) {
@@ -130,5 +144,27 @@ $entries.addEventListener('click', function (event) {
     $entryTitle.value = data.editing.entryTitle;
     $entryUrl.value = data.editing.entryUrl;
     $entryNotes.value = data.editing.entryNotes;
+  }
+});
+
+$deleteModal.addEventListener('click', function (event) {
+  if (event.target === $cancelButton) {
+    $deleteModal.className = 'hidden';
+  } else if (event.target === $confirmButton) {
+    $currentEntryEdit.remove();
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === data.editing.entryId) {
+        data.entries.splice(i, 1);
+      }
+    }
+    data.editing = null;
+    $currentEntryEdit = {};
+    $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+    $entryImage.setAttribute('alt', 'Placeholder Image');
+    $entryImage.setAttribute('title', 'Placeholder Image');
+    $entryForm.firstElementChild.reset();
+    $entryForm.className = 'hidden';
+    $entries.className = '';
+    $deleteModal.className = 'hidden';
   }
 });

@@ -74,10 +74,6 @@ h1 {
   }
 }
 
-.text-right {
-  text-align: right;
-}
-
 .justify-between {
   justify-content: space-between;
 }
@@ -129,7 +125,7 @@ ul {
   padding-inline-start: 0;
 }
 
-button.column-auto {
+.header button {
   font-size: 1rem;
   font-weight: 600;
   color: inherit;
@@ -139,13 +135,13 @@ button.column-auto {
   padding-left: 0.563rem;
 }
 
-button.entries-heading {
+.entries-heading button {
   width: auto;
   padding: 0.313rem 0.688rem;
   margin: auto 0;
 }
 
-h1.entries-heading {
+.entries-heading h1 {
   margin-bottom: 0;
 }
 
@@ -167,4 +163,65 @@ h1.entries-heading {
 
 .entries .right {
   margin-bottom: 1.688rem;
+}
+
+.delete {
+  padding: 0;
+}
+
+.delete button {
+  border: 0 none;
+  text-decoration-line: underline;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dark-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(41, 41, 41, 0.75);
+}
+
+.delete-modal {
+  max-width: 19.938rem;
+  background-color: white;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+}
+
+.delete-modal p {
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 1.813rem 0.125rem 1.438rem;
+}
+
+.delete-modal button {
+  margin: 0.875rem;
+  padding: 0.313rem 0.563rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+}
+
+button.cancel {
+  padding-left: 0.6888rem;
+  padding-right: 0.75rem;
+  color: #292929;
+  background-color: #b6b6b6;
+}
+
+button.confirm {
+  color: white;
+  background-color: #dc2626;
 }
