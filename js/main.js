@@ -3,6 +3,7 @@
 
 var $entriesButton = document.querySelector('.header button');
 var $entryForm = document.querySelector('[data-view="entry-form"]');
+var $entryFormHeading = $entryForm.querySelector('h1');
 var $entryUrl = document.querySelector('#entry-url');
 var $entryTitle = document.querySelector('#entry-title');
 var $entryNotes = document.querySelector('#entry-notes');
@@ -85,17 +86,26 @@ $entriesButton.addEventListener('click', function (event) {
 
 $entries.addEventListener('click', function (event) {
   if (event.target === $newButton) {
+    $entryFormHeading.textContent = 'New Entry';
     $entryForm.className = '';
     $entries.className = 'hidden';
   }
   if (event.target.tagName === 'I') {
+    $entryFormHeading.textContent = 'Edit Entry';
     $entryForm.className = '';
     $entries.className = 'hidden';
     var $currentEntryEdit = event.target.closest('li');
     var currentEntryId = $currentEntryEdit.getAttribute('id');
-    data.editing = data.entries.entryId[currentEntryId];
-    $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
-    $entryImage.setAttribute('alt', 'Placeholder Image');
-    $entryImage.setAttribute('title', 'Placeholder Image');
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === Number(currentEntryId)) {
+        data.editing = data.entries[i];
+      }
+    }
+    $entryImage.setAttribute('src', data.editing.entryUrl);
+    $entryImage.setAttribute('alt', data.editing.entryTitle);
+    $entryImage.setAttribute('title', data.editing.entryTitle);
+    $entryTitle.value = data.editing.entryTitle;
+    $entryUrl.values = data.editing.entryUrl;
+    $entryNotes.values = data.editing.entryNotes;
   }
 });
