@@ -74,10 +74,6 @@ h1 {
   }
 }
 
-.text-right {
-  text-align: right;
-}
-
 .justify-between {
   justify-content: space-between;
 }
@@ -198,8 +194,7 @@ ul {
 }
 
 .delete-modal {
-  width: 19.938rem;
-  height: 8.188rem;
+  max-width: 19.938rem;
   background-color: white;
   box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
   border-radius: 0.25rem;
@@ -207,6 +202,8 @@ ul {
 
 .delete-modal p {
   font-size: 0.875rem;
+  text-align: center;
+  margin: 1.813rem 0.125rem 1.438rem;
 }
 
 .delete-modal button {
@@ -214,7 +211,6 @@ ul {
   padding: 0.313rem 0.563rem;
   border-radius: 0.25rem;
   border: none;
-  line-height: 0rem;
   cursor: pointer;
 }
 

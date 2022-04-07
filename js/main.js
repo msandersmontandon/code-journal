@@ -14,10 +14,10 @@ var $entries = document.querySelector('[data-view="entries"]');
 var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
 var $currentEntryEdit = {};
-var currentEntryId = '';
 var $deleteModal = document.querySelector('[data-view="delete-modal"]');
 var $cancelButton = $deleteModal.querySelector('button.cancel');
 var $confirmButton = $deleteModal.querySelector('button.confirm');
+data.editing = null;
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -115,6 +115,8 @@ $entriesButton.addEventListener('click', function (event) {
   $entryForm.firstElementChild.reset();
   $entryForm.className = 'hidden';
   $entries.className = '';
+  data.editing = null;
+  $currentEntryEdit = {};
 });
 
 $entries.addEventListener('click', function (event) {
@@ -130,7 +132,7 @@ $entries.addEventListener('click', function (event) {
     $entries.className = 'hidden';
     $deleteButton.className = '';
     $currentEntryEdit = event.target.closest('li');
-    currentEntryId = $currentEntryEdit.getAttribute('id');
+    var currentEntryId = $currentEntryEdit.getAttribute('id');
     for (var i = 0; i < data.entries.length; i++) {
       if (data.entries[i].entryId === Number(currentEntryId)) {
         data.editing = data.entries[i];
@@ -149,12 +151,20 @@ $deleteModal.addEventListener('click', function (event) {
   if (event.target === $cancelButton) {
     $deleteModal.className = 'hidden';
   } else if (event.target === $confirmButton) {
-    document.delete($currentEntryEdit);
+    $currentEntryEdit.remove();
     for (var i = 0; i < data.entries.length; i++) {
-      if (data.entries[i].entryId === Number(currentEntryId)) {
+      if (data.entries[i].entryId === data.editing.entryId) {
         data.entries.splice(i, 1);
       }
     }
     data.editing = null;
+    $currentEntryEdit = {};
+    $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+    $entryImage.setAttribute('alt', 'Placeholder Image');
+    $entryImage.setAttribute('title', 'Placeholder Image');
+    $entryForm.firstElementChild.reset();
+    $entryForm.className = 'hidden';
+    $entries.className = '';
+    $deleteModal.className = 'hidden';
   }
 });
