@@ -3,12 +3,15 @@
 
 var $entriesButton = document.querySelector('.header button');
 var $entryForm = document.querySelector('[data-view="entry-form"]');
+var $entryFormHeading = $entryForm.querySelector('h1');
 var $entryUrl = document.querySelector('#entry-url');
 var $entryTitle = document.querySelector('#entry-title');
 var $entryNotes = document.querySelector('#entry-notes');
 var $entryImage = document.querySelector('.entry-image > img');
 var $entries = document.querySelector('[data-view="entries"]');
+var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
+var $currentEntryEdit = {};
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -25,18 +28,40 @@ $entryTitle.addEventListener('blur', function (event) {
 
 $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
-  var entryFormObject = {
-    entryTitle: $entryTitle.value,
-    entryUrl: $entryUrl.value,
-    entryNotes: $entryNotes.value,
-    entryId: data.nextEntryId++
-  };
-  data.entries.unshift(entryFormObject);
+  if (data.editing) {
+    data.editing.entryTitle = $entryTitle.value;
+    data.editing.entryUrl = $entryUrl.value;
+    data.editing.entryNotes = $entryNotes.value;
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === data.editing.entryId) {
+        data.entries.splice(i, 1, data.editing);
+      }
+    }
+    var $currentEditImage = $currentEntryEdit.querySelector('img');
+    $currentEditImage.setAttribute('src', data.editing.entryUrl);
+    $currentEditImage.setAttribute('alt', data.editing.entryTitle);
+    $currentEditImage.setAttribute('title', data.editing.entryTitle);
+    var $currentEditTitle = $currentEntryEdit.querySelector('h2');
+    $currentEditTitle.textContent = data.editing.entryTitle;
+    var $currentEditNotes = $currentEntryEdit.querySelector('p');
+    $currentEditNotes.textContent = data.editing.entryNotes;
+    data.editing = null;
+  } else {
+    var entryFormObject = {
+      entryTitle: $entryTitle.value,
+      entryUrl: $entryUrl.value,
+      entryNotes: $entryNotes.value,
+      entryId: data.nextEntryId++
+    };
+    data.entries.unshift(entryFormObject);
+    $ulEntries.prepend(setEntry(entryFormObject));
+  }
   $entryImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $entryImage.setAttribute('alt', 'Placeholder Image');
   $entryImage.setAttribute('title', 'Placeholder Image');
   $entryForm.firstElementChild.reset();
-  $ulEntries.prepend(setEntry(entryFormObject));
+  $entryForm.className = 'hidden';
+  $entries.className = '';
 });
 
 function setEntry(dataEntry) {
@@ -48,18 +73,24 @@ function setEntry(dataEntry) {
   $newEntry.appendChild($leftColumn);
   var $leftImage = document.createElement('img');
   $leftImage.setAttribute('src', dataEntry.entryUrl);
+  $leftImage.setAttribute('alt', dataEntry.entryTitle);
+  $leftImage.setAttribute('title', dataEntry.entryTitle);
   $leftColumn.appendChild($leftImage);
   var $rightColumn = document.createElement('div');
   $rightColumn.className = 'column-half right';
   $newEntry.appendChild($rightColumn);
+  var $rightRow = document.createElement('div');
+  $rightRow.className = 'row justify-between';
+  $rightColumn.appendChild($rightRow);
   var $rightTitle = document.createElement('h2');
   $rightTitle.textContent = dataEntry.entryTitle;
-  $rightColumn.appendChild($rightTitle);
+  $rightRow.appendChild($rightTitle);
+  var $rightIcon = document.createElement('i');
+  $rightIcon.className = 'fas fa-pen';
+  $rightRow.appendChild($rightIcon);
   var $rightNotes = document.createElement('p');
   $rightNotes.textContent = dataEntry.entryNotes;
   $rightColumn.appendChild($rightNotes);
-  $entryForm.className = 'hidden';
-  $entries.className = '';
   return $newEntry;
 }
 
@@ -77,6 +108,27 @@ $entriesButton.addEventListener('click', function (event) {
 });
 
 $entries.addEventListener('click', function (event) {
-  $entryForm.className = '';
-  $entries.className = 'hidden';
+  if (event.target === $newButton) {
+    $entryFormHeading.textContent = 'New Entry';
+    $entryForm.className = '';
+    $entries.className = 'hidden';
+  }
+  if (event.target.tagName === 'I') {
+    $entryFormHeading.textContent = 'Edit Entry';
+    $entryForm.className = '';
+    $entries.className = 'hidden';
+    $currentEntryEdit = event.target.closest('li');
+    var currentEntryId = $currentEntryEdit.getAttribute('id');
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === Number(currentEntryId)) {
+        data.editing = data.entries[i];
+      }
+    }
+    $entryImage.setAttribute('src', data.editing.entryUrl);
+    $entryImage.setAttribute('alt', data.editing.entryTitle);
+    $entryImage.setAttribute('title', data.editing.entryTitle);
+    $entryTitle.value = data.editing.entryTitle;
+    $entryUrl.value = data.editing.entryUrl;
+    $entryNotes.value = data.editing.entryNotes;
+  }
 });
