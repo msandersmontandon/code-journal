@@ -14,9 +14,10 @@ var $entries = document.querySelector('[data-view="entries"]');
 var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
 var $currentEntryEdit = {};
+var currentEntryId = '';
 var $deleteModal = document.querySelector('[data-view="delete-modal"]');
 var $cancelButton = $deleteModal.querySelector('button.cancel');
-// var $confirmButton = $deleteModal.querySelector('button.confirm');
+var $confirmButton = $deleteModal.querySelector('button.confirm');
 
 $entryUrl.addEventListener('blur', function (event) {
   if (event.target.value) {
@@ -129,7 +130,7 @@ $entries.addEventListener('click', function (event) {
     $entries.className = 'hidden';
     $deleteButton.className = '';
     $currentEntryEdit = event.target.closest('li');
-    var currentEntryId = $currentEntryEdit.getAttribute('id');
+    currentEntryId = $currentEntryEdit.getAttribute('id');
     for (var i = 0; i < data.entries.length; i++) {
       if (data.entries[i].entryId === Number(currentEntryId)) {
         data.editing = data.entries[i];
@@ -147,5 +148,13 @@ $entries.addEventListener('click', function (event) {
 $deleteModal.addEventListener('click', function (event) {
   if (event.target === $cancelButton) {
     $deleteModal.className = 'hidden';
+  } else if (event.target === $confirmButton) {
+    document.delete($currentEntryEdit);
+    for (var i = 0; i < data.entries.length; i++) {
+      if (data.entries[i].entryId === Number(currentEntryId)) {
+        data.entries.splice(i, 1);
+      }
+    }
+    data.editing = null;
   }
 });
