@@ -129,7 +129,7 @@ ul {
   padding-inline-start: 0;
 }
 
-button.column-auto {
+.header button {
   font-size: 1rem;
   font-weight: 600;
   color: inherit;
@@ -139,13 +139,13 @@ button.column-auto {
   padding-left: 0.563rem;
 }
 
-button.entries-heading {
+.entries-heading button {
   width: auto;
   padding: 0.313rem 0.688rem;
   margin: auto 0;
 }
 
-h1.entries-heading {
+.entries-heading h1 {
   margin-bottom: 0;
 }
 
@@ -167,4 +167,20 @@ h1.entries-heading {
 
 .entries .right {
   margin-bottom: 1.688rem;
+}
+
+.delete {
+  padding: 0;
+}
+
+.delete button {
+  border: 0 none;
+  text-decoration-line: underline;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
 }

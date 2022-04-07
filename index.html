@@ -46,17 +46,22 @@
             <textarea name="notesContent" id="entry-notes" rows="6" required></textarea>
           </div>
           <div class="column-full text-right">
-            <button class="theme">SAVE</button>
+            <div class="row justify-between align-center">
+              <div class="column-auto delete">
+                <button>Delete Entry</button>
+              </div>
+              <button class="theme column-auto save">SAVE</button>
+            </div>
           </div>
         </form>
       </div>
       <div data-view="entries">
-        <div class="row justify-between align-center">
+        <div class="row justify-between align-center entries-heading">
           <div class="column-auto">
-            <h1 class="entries-heading">Entries</h1>
+            <h1>Entries</h1>
           </div>
           <div class="column-auto text-right">
-            <button class="theme entries-heading">NEW</button>
+            <button class="theme">NEW</button>
           </div>
         </div>
         <ul class="entries">
