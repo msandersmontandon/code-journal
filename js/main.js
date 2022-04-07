@@ -15,7 +15,7 @@ var $newButton = $entries.querySelector('button');
 var $ulEntries = $entries.querySelector('ul.entries');
 var $currentEntryEdit = {};
 var $deleteModal = document.querySelector('[data-view="delete-modal"]');
-// var $cancelButton = $deleteModal.querySelector('button.cancel');
+var $cancelButton = $deleteModal.querySelector('button.cancel');
 // var $confirmButton = $deleteModal.querySelector('button.confirm');
 
 $entryUrl.addEventListener('blur', function (event) {
@@ -141,5 +141,11 @@ $entries.addEventListener('click', function (event) {
     $entryTitle.value = data.editing.entryTitle;
     $entryUrl.value = data.editing.entryUrl;
     $entryNotes.value = data.editing.entryNotes;
+  }
+});
+
+$deleteModal.addEventListener('click', function (event) {
+  if (event.target === $cancelButton) {
+    $deleteModal.className = 'hidden';
   }
 });
