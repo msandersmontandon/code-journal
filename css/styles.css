@@ -184,3 +184,48 @@ ul {
   cursor: pointer;
   padding: 0;
 }
+
+.dark-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(41, 41, 41, 0.75);
+}
+
+.delete-modal {
+  width: 19.938rem;
+  height: 8.188rem;
+  background-color: white;
+  box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+}
+
+.delete-modal p {
+  font-size: 0.875rem;
+}
+
+.delete-modal button {
+  margin: 0.875rem;
+  padding: 0.313rem 0.563rem;
+  border-radius: 0.25rem;
+  border: none;
+  line-height: 0rem;
+  cursor: pointer;
+}
+
+button.cancel {
+  padding-left: 0.6888rem;
+  padding-right: 0.75rem;
+  color: #292929;
+  background-color: #b6b6b6;
+}
+
+button.confirm {
+  color: white;
+  background-color: #dc2626;
+}
